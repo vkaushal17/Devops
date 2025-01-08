@@ -1,11 +1,11 @@
 ##Linux
-- Linux Principles
+- **Linux Principles**
 -  Everything is a file (including Hardware)
 -  small single purpose program
 -  ability to chain programs together for complex operations
 -  Avoid captive user interface
 -  configuration data store in text file
-- Why Linux? 
+- **Why Linux?**
 -  open source
 -  community support
 -  support wide varity of hardware
@@ -18,14 +18,14 @@
 -  Kernel − It is the core component of Operating System, interacts directly with hardware, provides low level services to upper layer components.
 -  Shell − An interface to kernel, hiding complexity of kernel's functions from users. The shell takes commands from the user and executes kernel's functions.
 -  Utilities − Utility programs that provide the user most of the functionalities of an operating systems.
-- Popular Linux Distros
+- **Popular Linux Distros**
 -  Ubuntu linux
 -  Linux Mint
 -  Arch Linux
 -  Fedra
 -  Debian
 -  OpenSuse
-- Popular Server Linux OS
+- **Popular Server Linux OS**
 -  Red Hat Enterprise Linux
 -  Utuntu Server
 -  Centos
