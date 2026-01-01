@@ -1,0 +1,103 @@
+import { expect} from '@playwright/test';
+export class corporateGiftCard {
+    constructor(page) {
+       
+        this.page = page;
+        this.cropGift = this.page.locator('[data-cy="CorporateGifting_476"]')
+        this.corporateGiftImage = this.page.getByRole('img', { name: 'corporateGiftImage' })
+        this.interestedBtn = this.page.getByRole('button', { name: 'I\'m Interested' })
+        this.giftCardCount = this.page.locator('#gift_card_count')
+        this.selectDropdown = this.page.locator('div').filter({ hasText: /^Select$/ })
+        this.lsaOption = this.page.locator('div').filter({ hasText: /^LSA \(Long Service Awards\)$/ })
+        this.nameField = this.page.locator('#name')
+        this.phoneField = this.page.locator('#phone_number')
+        this.emailField = this.page.locator('#email')
+        this.locationField = this.page.locator('#location')
+        this.submitBtn = this.page.getByRole('button', { name: 'Submit' })
+        this.countryCode = this.page.locator('#countryCode').first()
+        this.purposeField = this.page.locator('#purpose').first()
+        this.campaignWinner = this.page.locator('div').filter({ hasText: /^Campaign Winner$/ })
+        this.closeBtn = this.page.getByRole('button', { name: 'Close' })
+        this.minimizeBtn = this.page.getByRole('img', { name: 'minimize' })
+    }
+
+    // Helper function to take screenshot
+    async takeScreenshot(testInfo, stepName) {
+        try {
+            const screenshot = await this.page.screenshot({ 
+                fullPage: true,
+                type: 'png'
+            });
+
+            await testInfo.attach(stepName, {
+                body: screenshot,
+                contentType: 'image/png'
+            });
+            
+            console.log(`Screenshot attached: ${stepName}`);
+        } catch (error) {
+            console.error(`Failed to attach screenshot for ${stepName}:`, error);
+        }
+    }
+
+    async corporateGiftBanner(testInfo) {
+        // Click on corporate gift image to open popup
+        const page3Promise = this.page.waitForEvent('popup');
+        await this.corporateGiftImage.click();
+        const page3 = await page3Promise;
+        
+        if (testInfo) await this.takeScreenshot(testInfo, 'Corporate Gift Page Opened');
+        
+        // Click I'm Interested button
+        await page3.getByRole('button', { name: 'I\'m Interested' }).click();
+        if (testInfo) await this.takeScreenshot(testInfo, 'After Clicking I\'m Interested');
+        
+        // Fill gift card count
+        await page3.locator('#gift_card_count').click();
+        await page3.locator('#gift_card_count').fill('500');
+        if (testInfo) await this.takeScreenshot(testInfo, 'Gift Card Count Filled');
+        
+        // Select dropdown option
+        await page3.locator('div').filter({ hasText: /^Select$/ }).click();
+        await page3.locator('div').filter({ hasText: /^LSA \(Long Service Awards\)$/ }).click();
+        if (testInfo) await this.takeScreenshot(testInfo, 'LSA Option Selected');
+        
+        // Fill name field
+        await page3.locator('#name').click();
+        await page3.locator('#name').fill('megha');
+        if (testInfo) await this.takeScreenshot(testInfo, 'Name Field Filled');
+        
+        // Close minimize popup if exists
+        try {
+            await page3.getByRole('img', { name: 'minimize' }).click();
+        } catch (error) {
+            console.log('Minimize button not found, continuing...');
+        }
+        
+        // Fill phone number with valid format
+        await page3.locator('#phone_number').click();
+        await page3.locator('#phone_number').fill('9121730257');
+        if (testInfo) await this.takeScreenshot(testInfo, 'Phone Number Filled');
+        
+        // Fill email
+        await page3.locator('#email').click();
+        await page3.locator('#email').fill('varsh@gmail.com');
+        if (testInfo) await this.takeScreenshot(testInfo, 'Email Filled');
+        
+        // Fill location
+        await page3.locator('#location').click();
+        await page3.locator('#location').fill('ind');
+        if (testInfo) await this.takeScreenshot(testInfo, 'Location Filled');
+        
+        // Select purpose
+        await page3.locator('#purpose').first().click();
+        await page3.locator('div').filter({ hasText: /^Campaign Winner$/ }).click();
+        if (testInfo) await this.takeScreenshot(testInfo, 'Purpose Selected');
+        
+        // Submit the form
+        await page3.getByRole('button', { name: 'Submit' }).click();
+        if (testInfo) await this.takeScreenshot(testInfo, 'Form Submitted');
+        
+        return page3; // Return the popup page for further actions if needed
+    }
+}
